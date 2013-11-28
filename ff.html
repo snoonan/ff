@@ -1,0 +1,208 @@
+<html>
+    <head>
+        <title>Fresh Fish</title>
+        <link rel="stylesheet" type="text/css" href="ff.css"/>
+        <script src="ff.js"></script>
+    </head>
+    <body>
+        Players:<br>
+        <table id="players"border=1>
+            <tr>
+                <th >Name</td>
+                <th >Markers</td>
+                <th >Money</td>
+                <th >Fish</td>
+                <th >Games</td>
+                <th >Oil</td>
+                <th >Nuke</td>
+                <th >Total</td>
+            </tr>
+            <tr class="p0" id='p0'>
+                <td ><input id="p0_name" placeholder="Name"></td>
+                <td id="p0_markers"></td>
+                <td id="p0_money"></td>
+                <td id="p0_f"></td>
+                <td id="p0_s"></td>
+                <td id="p0_o"></td>
+                <td id="p0_p"></td>
+                <td id="p0_total"></td>
+            </tr>
+            <tr class="p1" id='p1'>
+                <td ><input id="p1_name" placeholder="Name"></td>
+                <td id="p1_markers"></td>
+                <td id="p1_money"></td>
+                <td id="p1_f"></td>
+                <td id="p1_s"></td>
+                <td id="p1_o"></td>
+                <td id="p1_p"></td>
+                <td id="p1_total"></td>
+            </tr>
+            <tr class="p2" id='p2'>
+                <td ><input id="p2_name" placeholder="Name"></td>
+                <td id="p2_markers"></td>
+                <td id="p2_money"></td>
+                <td id="p2_f"></td>
+                <td id="p2_s"></td>
+                <td id="p2_o"></td>
+                <td id="p2_p"></td>
+                <td id="p2_total"></td>
+            </tr>
+            <tr class="p3" id='p3'>
+                <td ><input id="p3_name" placeholder="Name"></td>
+                <td id="p3_markers"></td>
+                <td id="p3_money"></td>
+                <td id="p3_f"></td>
+                <td id="p3_s"></td>
+                <td id="p3_o"></td>
+                <td id="p3_p"></td> <td id="p3_total"></td> </tr>
+            <tr class="p4" id='p4'>
+                <td ><input id="p4_name" placeholder="Name"></td>
+                <td id="p4_markers"></td>
+                <td id="p4_money"></td>
+                <td id="p4_f"></td>
+                <td id="p4_s"></td>
+                <td id="p4_o"></td>
+                <td id="p4_p"></td>
+                <td id="p4_total"></td>
+            </tr>
+        </table>
+        <button  id='start' onclick="start()">Start game</button>
+        <button  id='restart' onclick="restart()" hidden >Another game</button>
+        Active player:<span id=active_player></span> has <span id=active_markers></span> markers left.
+        <br>
+        <button hidden id='proad' onclick="placeroad()">place road</button>
+        <button hidden id='pgarden' onclick="placegarden()">place garden</button>
+        <button hidden id='ppass' onclick="pass()">pass</button>
+        <button hidden id='ptile' onclick="pulltile()">pull tile (<span id='tcount'></span>)</button><span id="pulled_state"></span><div id="pulled_tile"><div style='width: 10' id="pulled_inner" >&nbsp;</div></div>
+        <span id=bid hidden >
+            <input type=password class="p0" size=3 id=p0_bid ></input>
+            <input type=password class="p1" size=3 id=p1_bid ></input>
+            <input type=password class="p2" size=3 id=p2_bid ></input>
+            <input type=password class="p3" size=3 id=p3_bid ></input>
+            <input type=password class="p4" size=3 id=p4_bid ></input>
+            <button id='pbid' onclick="bid_done()">Resolve bids</button>
+        </span>
+        <table border=1>
+            <tr>
+                <td hidden onclick='select(1,1)' id="1_1" class='cell empty'><span id="1_1_inner"></span></td>
+                <td hidden onclick='select(1,2)' id="1_2" class='cell empty'><div style='width: 10' id="1_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(1,3)' id="1_3" class='cell empty'><div style='width: 10' id="1_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(1,4)' id="1_4" class='cell empty'><div style='width: 10' id="1_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(1,5)' id="1_5" class='cell empty'><div style='width: 10' id="1_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(1,6)' id="1_6" class='cell empty'><div style='width: 10' id="1_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(1,7)' id="1_7" class='cell empty'><div style='width: 10' id="1_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(1,8)' id="1_8" class='cell empty'><div style='width: 10' id="1_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(1,9)' id="1_9" class='cell empty'><div style='width: 10' id="1_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(1,10)' id="1_10" class='cell empty'><div style='width: 10' id="1_10_inner" >&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td hidden onclick='select(2,1)' id="2_1" class='cell empty'><div style='width: 10' id="2_1_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(2,2)' id="2_2" class='cell empty'><div style='width: 10' id="2_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(2,3)' id="2_3" class='cell empty'><div style='width: 10' id="2_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(2,4)' id="2_4" class='cell empty'><div style='width: 10' id="2_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(2,5)' id="2_5" class='cell empty'><div style='width: 10' id="2_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(2,6)' id="2_6" class='cell empty'><div style='width: 10' id="2_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(2,7)' id="2_7" class='cell empty'><div style='width: 10' id="2_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(2,8)' id="2_8" class='cell empty'><div style='width: 10' id="2_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(2,9)' id="2_9" class='cell empty'><div style='width: 10' id="2_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(2,10)' id="2_10" class='cell empty'><div style='width: 10' id="2_10_inner" >&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td hidden onclick='select(3,1)' id="3_1" class='cell empty'><div style='width: 10' id="3_1_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(3,2)' id="3_2" class='cell empty'><div style='width: 10' id="3_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(3,3)' id="3_3" class='cell empty'><div style='width: 10' id="3_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(3,4)' id="3_4" class='cell empty'><div style='width: 10' id="3_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(3,5)' id="3_5" class='cell empty'><div style='width: 10' id="3_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(3,6)' id="3_6" class='cell empty'><div style='width: 10' id="3_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(3,7)' id="3_7" class='cell empty'><div style='width: 10' id="3_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(3,8)' id="3_8" class='cell empty'><div style='width: 10' id="3_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(3,9)' id="3_9" class='cell empty'><div style='width: 10' id="3_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(3,10)' id="3_10" class='cell empty'><div style='width: 10' id="3_10_inner" >&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td hidden onclick='select(4,1)' id="4_1" class='cell empty'><div style='width: 10' id="4_1_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(4,2)' id="4_2" class='cell empty'><div style='width: 10' id="4_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(4,3)' id="4_3" class='cell empty'><div style='width: 10' id="4_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(4,4)' id="4_4" class='cell empty'><div style='width: 10' id="4_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(4,5)' id="4_5" class='cell empty'><div style='width: 10' id="4_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(4,6)' id="4_6" class='cell empty'><div style='width: 10' id="4_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(4,7)' id="4_7" class='cell empty'><div style='width: 10' id="4_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(4,8)' id="4_8" class='cell empty'><div style='width: 10' id="4_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(4,9)' id="4_9" class='cell empty'><div style='width: 10' id="4_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(4,10)' id="4_10" class='cell empty'><div style='width: 10' id="4_10_inner" >&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td hidden onclick='select(5,1)' id="5_1" class='cell empty'><div style='width: 10' id="5_1_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(5,2)' id="5_2" class='cell empty'><div style='width: 10' id="5_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(5,3)' id="5_3" class='cell empty'><div style='width: 10' id="5_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(5,4)' id="5_4" class='cell empty'><div style='width: 10' id="5_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(5,5)' id="5_5" class='cell empty'><div style='width: 10' id="5_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(5,6)' id="5_6" class='cell empty'><div style='width: 10' id="5_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(5,7)' id="5_7" class='cell empty'><div style='width: 10' id="5_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(5,8)' id="5_8" class='cell empty'><div style='width: 10' id="5_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(5,9)' id="5_9" class='cell empty'><div style='width: 10' id="5_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(5,10)' id="5_10" class='cell empty'><div style='width: 10' id="5_10_inner" >&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td hidden onclick='select(6,1)' id="6_1" class='cell empty'><div style='width: 10' id="6_1_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(6,2)' id="6_2" class='cell empty'><div style='width: 10' id="6_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(6,3)' id="6_3" class='cell empty'><div style='width: 10' id="6_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(6,4)' id="6_4" class='cell empty'><div style='width: 10' id="6_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(6,5)' id="6_5" class='cell empty'><div style='width: 10' id="6_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(6,6)' id="6_6" class='cell empty'><div style='width: 10' id="6_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(6,7)' id="6_7" class='cell empty'><div style='width: 10' id="6_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(6,8)' id="6_8" class='cell empty'><div style='width: 10' id="6_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(6,9)' id="6_9" class='cell empty'><div style='width: 10' id="6_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(6,10)' id="6_10" class='cell empty'><div style='width: 10' id="6_10_inner" >&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td hidden onclick='select(7,1)' id="7_1" class='cell empty'><div style='width: 10' id="7_1_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(7,2)' id="7_2" class='cell empty'><div style='width: 10' id="7_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(7,3)' id="7_3" class='cell empty'><div style='width: 10' id="7_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(7,4)' id="7_4" class='cell empty'><div style='width: 10' id="7_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(7,5)' id="7_5" class='cell empty'><div style='width: 10' id="7_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(7,6)' id="7_6" class='cell empty'><div style='width: 10' id="7_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(7,7)' id="7_7" class='cell empty'><div style='width: 10' id="7_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(7,8)' id="7_8" class='cell empty'><div style='width: 10' id="7_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(7,9)' id="7_9" class='cell empty'><div style='width: 10' id="7_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(7,10)' id="7_10" class='cell empty'><div style='width: 10' id="7_10_inner" >&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td hidden onclick='select(8,1)' id="8_1" class='cell empty'><div style='width: 10' id="8_1_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(8,2)' id="8_2" class='cell empty'><div style='width: 10' id="8_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(8,3)' id="8_3" class='cell empty'><div style='width: 10' id="8_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(8,4)' id="8_4" class='cell empty'><div style='width: 10' id="8_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(8,5)' id="8_5" class='cell empty'><div style='width: 10' id="8_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(8,6)' id="8_6" class='cell empty'><div style='width: 10' id="8_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(8,7)' id="8_7" class='cell empty'><div style='width: 10' id="8_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(8,8)' id="8_8" class='cell empty'><div style='width: 10' id="8_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(8,9)' id="8_9" class='cell empty'><div style='width: 10' id="8_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(8,10)' id="8_10" class='cell empty'><div style='width: 10' id="8_10_inner" >&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td hidden onclick='select(9,1)' id="9_1" class='cell empty'><div style='width: 10' id="9_1_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(9,2)' id="9_2" class='cell empty'><div style='width: 10' id="9_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(9,3)' id="9_3" class='cell empty'><div style='width: 10' id="9_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(9,4)' id="9_4" class='cell empty'><div style='width: 10' id="9_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(9,5)' id="9_5" class='cell empty'><div style='width: 10' id="9_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(9,6)' id="9_6" class='cell empty'><div style='width: 10' id="9_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(9,7)' id="9_7" class='cell empty'><div style='width: 10' id="9_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(9,8)' id="9_8" class='cell empty'><div style='width: 10' id="9_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(9,9)' id="9_9" class='cell empty'><div style='width: 10' id="9_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(9,10)' id="9_10" class='cell empty'><div style='width: 10' id="9_10_inner" >&nbsp;</div></td>
+            </tr>
+            <tr>
+                <td hidden onclick='select(10,1)' id="10_1" class='cell empty'><div style='width: 10' id="10_1_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(10,2)' id="10_2" class='cell empty'><div style='width: 10' id="10_2_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(10,3)' id="10_3" class='cell empty'><div style='width: 10' id="10_3_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(10,4)' id="10_4" class='cell empty'><div style='width: 10' id="10_4_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(10,5)' id="10_5" class='cell empty'><div style='width: 10' id="10_5_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(10,6)' id="10_6" class='cell empty'><div style='width: 10' id="10_6_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(10,7)' id="10_7" class='cell empty'><div style='width: 10' id="10_7_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(10,8)' id="10_8" class='cell empty'><div style='width: 10' id="10_8_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(10,9)' id="10_9" class='cell empty'><div style='width: 10' id="10_9_inner" >&nbsp;</div></td>
+                <td hidden onclick='select(10,10)' id="10_10" class='cell empty'><div style='width: 10' id="10_10_inner" >&nbsp;</div></td>
+            </tr>
+        </table>
+    </body>
+</html>

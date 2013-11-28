@@ -1,0 +1,51 @@
+.p0 {
+    background-color: red;
+}
+.p1 {
+    background-color: cyan;
+}
+.p2 {
+    background-color: blue;
+}
+.p3 {
+    background-color: yellow;
+}
+.p4 {
+    background-color: magenta;
+}
+.garden {
+    background-image: url(ff_garden.jpg);
+}
+.road {
+    background-image: url(ff_road.png);
+}
+.empty {
+}
+.FishMarket {
+    background-image: url(ff_harbor.png);
+}
+.PowerPlant {
+    background-image: url(ff_Nuke.png);
+}
+.StoreWearhouse {
+    background-image: url(ff_Game.png);
+}
+.OilDepot {
+    background-image: url(ff_Oil.png);
+}
+.fishStore {
+    background-image: url(ff_fish.png);
+}
+.powerDump {
+    background-image: url(ff_waste.png);
+}
+.storeFront {
+    background-image: url(ff_gameshop.png);
+}
+.oilStation {
+    background-image: url(ff_gas.png);
+}
+.cell {
+    height: 75;
+    width: 75;
+}
