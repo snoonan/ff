@@ -3,8 +3,29 @@
         <title>Fresh Fish</title>
         <link rel="stylesheet" type="text/css" href="ff.css"/>
         <script src="ff.js"></script>
+<link href="fancy.css" rel="stylesheet" type="text/css">
+<!-- https://github.com/davidbau/seedrandom -->
+<script type="text/javascript" src="http://davidbau.com/encode/seedrandom-min.js" ></script>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.js"></script>
+<script type="text/javascript" src="multi.js"></script>
     </head>
     <body>
+  <div id="webrtc" hidden>
+    Your PeerJS ID is <span id="pid"></span><br>
+    Connect to a peer: <input type="text" id="rid" placeholder="Someone else's id"><input class="button" type="button" value="Connect" id="connect"><br><br>
+
+    <form id="send">
+      <input type="text" id="text" placeholder="Enter message"><input class="button" type="submit" value="Send to selected peers">
+    </form>
+    <button id="close">Close selected connections</button>
+  <div id="wrap"><div id="connections"><span class="filler">You have not yet
+
+        made any connections.</span></div>
+    <div class="clear"></div></div>
+  </div>
         Players:<br>
         <table id="players"border=1>
             <tr>
@@ -16,9 +37,10 @@
                 <th >Oil</td>
                 <th >Nuke</td>
                 <th >Total</td>
+                <th >Peer</td>
             </tr>
             <tr class="p0" id='p0'>
-                <td ><input id="p0_name" placeholder="Name"></td>
+                <td ><input id="p0_name" placeholder="Name" onchange="update_name(0)"></td>
                 <td id="p0_markers"></td>
                 <td id="p0_money"></td>
                 <td id="p0_f"></td>
@@ -26,9 +48,10 @@
                 <td id="p0_o"></td>
                 <td id="p0_p"></td>
                 <td id="p0_total"></td>
+                <td id="p0_peer"></td>
             </tr>
             <tr class="p1" id='p1'>
-                <td ><input id="p1_name" placeholder="Name"></td>
+                <td ><input id="p1_name" placeholder="Name" onchange="update_name(1)"></td>
                 <td id="p1_markers"></td>
                 <td id="p1_money"></td>
                 <td id="p1_f"></td>
@@ -36,9 +59,10 @@
                 <td id="p1_o"></td>
                 <td id="p1_p"></td>
                 <td id="p1_total"></td>
+                <td id="p1_peer"></td>
             </tr>
             <tr class="p2" id='p2'>
-                <td ><input id="p2_name" placeholder="Name"></td>
+                <td ><input id="p2_name" placeholder="Name" onchange="update_name(2)"></td>
                 <td id="p2_markers"></td>
                 <td id="p2_money"></td>
                 <td id="p2_f"></td>
@@ -46,17 +70,21 @@
                 <td id="p2_o"></td>
                 <td id="p2_p"></td>
                 <td id="p2_total"></td>
+                <td id="p2_peer"></td>
             </tr>
             <tr class="p3" id='p3'>
-                <td ><input id="p3_name" placeholder="Name"></td>
+                <td ><input id="p3_name" placeholder="Name" onchange="update_name(3)"></td>
                 <td id="p3_markers"></td>
                 <td id="p3_money"></td>
                 <td id="p3_f"></td>
                 <td id="p3_s"></td>
                 <td id="p3_o"></td>
-                <td id="p3_p"></td> <td id="p3_total"></td> </tr>
+                <td id="p3_p"></td>
+                <td id="p3_total"></td>
+                <td id="p3_peer"></td>
+             </tr>
             <tr class="p4" id='p4'>
-                <td ><input id="p4_name" placeholder="Name"></td>
+                <td ><input id="p4_name" placeholder="Name" onchange="update_name(4)"></td>
                 <td id="p4_markers"></td>
                 <td id="p4_money"></td>
                 <td id="p4_f"></td>
@@ -64,6 +92,7 @@
                 <td id="p4_o"></td>
                 <td id="p4_p"></td>
                 <td id="p4_total"></td>
+                <td id="p4_peer"></td>
             </tr>
         </table>
         <button  id='start' onclick="start()">Start game</button>
@@ -75,12 +104,12 @@
         <button hidden id='ppass' onclick="pass()">pass</button>
         <button hidden id='ptile' onclick="pulltile()">pull tile (<span id='tcount'></span>)</button><span id="pulled_state"></span><div id="pulled_tile"><div style='width: 10' id="pulled_inner" >&nbsp;</div></div>
         <span id=bid hidden >
-            <input type=password class="p0" size=3 id=p0_bid ></input>
-            <input type=password class="p1" size=3 id=p1_bid ></input>
-            <input type=password class="p2" size=3 id=p2_bid ></input>
-            <input type=password class="p3" size=3 id=p3_bid ></input>
-            <input type=password class="p4" size=3 id=p4_bid ></input>
-            <button id='pbid' onclick="bid_done()">Resolve bids</button>
+            <input type=password class="p0" size=3 id=p0_bid onchange="update_bid(0)"></input>
+            <input type=password class="p1" size=3 id=p1_bid onchange="update_bid(1)"></input>
+            <input type=password class="p2" size=3 id=p2_bid onchange="update_bid(2)"></input>
+            <input type=password class="p3" size=3 id=p3_bid onchange="update_bid(3)"></input>
+            <input type=password class="p4" size=3 id=p4_bid onchange="update_bid(4)"></input>
+            <button id='pbid' onclick="click_bid()">Resolve bids</button>
         </span>
         <table border=1>
             <tr>

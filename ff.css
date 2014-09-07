@@ -1,17 +1,17 @@
 .p0 {
-    background-color: red;
+    background-color: rgb(255, 204, 153);
 }
 .p1 {
-    background-color: cyan;
+    background-color: rgb(204, 204, 255);
 }
 .p2 {
-    background-color: blue;
+    background-color: rgb(255, 102, 102);
 }
 .p3 {
     background-color: yellow;
 }
 .p4 {
-    background-color: magenta;
+    background-color: rgb(139, 230, 2);
 }
 .garden {
     background-image: url(ff_garden.jpg);
