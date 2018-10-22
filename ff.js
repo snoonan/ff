@@ -75,7 +75,7 @@ function place(p,t,x,y, local)
        for(var i = 0; i < game.max_player; i++) {
         update_player(game.player_order[i]);
        }
-        if (game.placing == p) {
+        if (game.placing == game.player_idx) {
             next_player();
         }
         game.placing = -1;
@@ -333,31 +333,31 @@ function update_player(p) {
         ap.innerText = '';
     if (game.Players[p].f !== undefined) {
         ap.innerText = game.Players[p].f.join(' ');
-        if(game.Players[p].f.length == 2) { done += 1; }
+        if(game.Players[p].f.length == 2 && game.Players[p].f[2] == '=') { done += 1; }
     }
         var ap = document.getElementById("p"+p+"_s");
         ap.innerText = '';
     if (game.Players[p].s !== undefined) {
         ap.innerText = game.Players[p].s.join(' ');
-        if(game.Players[p].s.length == 2) { done += 1; }
+        if(game.Players[p].s.length == 2 && game.Players[p].s[2] == '=') { done += 1; }
     }
         var ap = document.getElementById("p"+p+"_o");
         ap.innerText = '';
     if (game.Players[p].o !== undefined) {
         ap.innerText = game.Players[p].o.join(' ');
-        if(game.Players[p].o.length == 2) { done += 1; }
+        if(game.Players[p].o.length == 2 && game.Players[p].o[2] == '=') { done += 1; }
     }
         var ap = document.getElementById("p"+p+"_p");
         ap.innerText = '';
     if (game.Players[p].p !== undefined) {
         ap.innerText = game.Players[p].p.join(' ');
-        if(game.Players[p].p.length == 2) { done += 1; }
+        if(game.Players[p].p.length == 2 && game.Players[p].p[2] == '=') { done += 1; }
     }
     if (game.Players[p].total !== undefined) {
         var ap = document.getElementById("p"+p+"_total");
         ap.innerText = game.Players[p].total;
     }
-    if (done == 4) { game.players_done += 1; }
+    if (done == 4 && !game.Player[p].done) { game.Players[p].done = 1; game.players_done += 1; }
     if (game.players_done == game.max_player) {
       end();
     }
@@ -418,6 +418,9 @@ function bid(p, current_bid) {
     var bid = +ap.value;
 
     if (ap.hidden) { return -1; }
+    if (ap.value == "") {
+        return -2;
+    }
     if (bid < 0) {
         bid = 0;
     }
@@ -431,8 +434,9 @@ function bid(p, current_bid) {
 }
 
 function click_bid() {
-   game_cmd_send("bid_resolve");
-   bid_done();
+   if (bid_done()) {
+       game_cmd_send("bid_resolve");
+   }
 }
 
 function bid_done() {
@@ -442,6 +446,9 @@ function bid_done() {
         for(var w = game.player_order.indexOf(game.player_idx)+1; w < game.max_player; w++) {
             var p = game.player_order[w];
             var v = bid(p,b);
+            if (v == -2) {
+                return false;
+            }
             if (v >= 0) {
                 winner = p;
                 b = v;
@@ -450,6 +457,9 @@ function bid_done() {
         for(var w = 0; w <= game.player_order.indexOf(game.player_idx); w++) {
             var p = game.player_order[w];
             var v = bid(p,b);
+            if (v == -2) {
+                return false;
+            }
             if (v >= 0) {
                 winner = p;
                 b = v;
